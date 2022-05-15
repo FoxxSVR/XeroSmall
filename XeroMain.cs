@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using MelonLoader;
 using VRC;
 
-namespace Xero
+namespace Xero 
 {
     public class XeroMain : MelonMod
     {
@@ -11,6 +14,18 @@ namespace Xero
             MelonCoroutines.Start(HookOnUiManagerInit());
 			Buttons.CallonApplicationStart();
         }
+		private async Task UpdateAsync()
+        {
+			File.Delete(Path.Combine(Environment.CurrentDirectory, "Mods\\Xero.dll"));
+			MelonLogger.Msg("Deleted Xero.dll Installing New Version...");
+			await System.Threading.Tasks.Task.Delay(999);
+			WebClient webClient2 = new WebClient();
+			webClient2.DownloadFile(String.Format("https://raw.githubusercontent.com/genericname02/nothingspecial/main/Xero.dll"), Path.Combine(Environment.CurrentDirectory, "Mods\\Xero.dll"));
+		}
+		public override void OnApplicationLateStart()
+        {
+		
+		}
         public override void OnUpdate()
         {
 			Buttons.CallonUpdate();
