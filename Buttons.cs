@@ -59,7 +59,18 @@ namespace Xero
                     {
                         Networking.GoToRoom(inputtext2);
                     }
-                    catch { MelonLogger.Error("Text Entered was " + Color.red + "NOT" + Color.white + " a Wrld ID"); }
+                    catch { MelonLogger.Error("Text Entered was not a World ID"); }
+                }, null, null);
+            }, null);
+            _applyavatarbyid = _uiManager.MainMenu.AddButton("Change Avatar by ID", "Change Avatar by ID", delegate ()
+            {
+                Popup.CreateInputPopup("Change Avatar by ID", "", "ID Here...", "Cancel", "Confirm", UnityEngine.UI.InputField.InputType.Standard, false, delegate (string inputtext2)
+                {
+                    try
+                    {
+                        Utils.ChangeAVIFromString(inputtext2);
+                    }
+                    catch { MelonLogger.Error("Text Entered was not a World ID"); }
                 }, null, null);
             }, null);
             _eventboolbutton = _uiManager.MainMenu.AddToggle("Incoming Events", "Turns off / on all incoming Events", delegate (bool evnt)
@@ -216,6 +227,7 @@ namespace Xero
         private static ReMenuPage _flyPage;
         private static ReMenuButton _getWorldID;
         private static ReMenuButton _joinworldbyid;
+        private static ReMenuButton _applyavatarbyid;
         private static ReMenuToggle _eventboolbutton;
         private static ReMenuToggle _flyToggle;
         private static ReMenuToggle _noClipToggle;
