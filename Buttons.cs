@@ -155,13 +155,9 @@ namespace Xero
                     _gravity = Physics.gravity;
                     Physics.gravity = Vector3.zero;
                     if (XRDevice.isPresent)
-                    {
                         _coroutine = MelonCoroutines.Start(FlyCoroutineVR());
-                    }
                     else
-                    {
                         _coroutine = MelonCoroutines.Start(FlyCoroutineDesktop());
-                    }
                     _isFlyEnabled = true;
                 }
             }
@@ -219,6 +215,10 @@ namespace Xero
                 Transform transform = (field_Internal_Static_VRCPlayer_).transform;
                 transform.position = transform.position + val;
                 field_Internal_Static_VRCPlayer_.prop_VRCPlayerApi_0.SetVelocity(Vector3.zero);
+                if (Input.mouseScrollDelta.y != 0f)
+                    _flyspeed += (int)Input.mouseScrollDelta.y;
+                if (_flyspeed <= 0)
+                    _flyspeed = 1;
                 yield return null;
             }
         }
