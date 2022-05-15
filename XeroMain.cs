@@ -1,30 +1,48 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
+using ExitGames.Client.Photon;
 using MelonLoader;
+using Photon.Realtime;
 using VRC;
+using Player = VRC.Player;
 
 namespace Xero 
 {
     public class XeroMain : MelonMod
     {
+
         public override void OnApplicationStart()
         {
             MelonCoroutines.Start(HookOnUiManagerInit());
 			Buttons.CallonApplicationStart();
         }
 		private async Task UpdateAsync()
-        {
-			File.Delete(Path.Combine(Environment.CurrentDirectory, "Mods\\Xero.dll"));
-			MelonLogger.Msg("Deleted Xero.dll Installing New Version...");
-			await System.Threading.Tasks.Task.Delay(999);
-			WebClient webClient2 = new WebClient();
-			webClient2.DownloadFile(String.Format("https://raw.githubusercontent.com/genericname02/nothingspecial/main/Xero.dll"), Path.Combine(Environment.CurrentDirectory, "Mods\\Xero.dll"));
+		{
+			if (File.Exists(directory))
+			{
+				File.Delete(directory);
+				if (!File.Exists(directory))
+				{
+					await Task.Delay(999);
+					WebClient webClient2 = new WebClient();
+					webClient2.DownloadFile(String.Format("https://github.com/FoxxSVR/XeroSmall/releases/download/v1.0.0/XeroSmall.dll"), Path.Combine(Environment.CurrentDirectory, "Mods\\XeroSmall.dll"));
+				}
+			}
 		}
+		private async Task CallAwait()
+        {
+			await UpdateAsync();
+        }
 		public override void OnApplicationLateStart()
         {
-		
+			try
+			{
+				CallAwait();
+			}
+			catch (Exception ex) { MelonLogger.Msg("Error in Updating Client {0}", ex.Message); }
 		}
         public override void OnUpdate()
         {
@@ -45,6 +63,25 @@ namespace Xero
         public void OnUiManagerInit()
         {
 			Buttons.CallonUI();
+			try
+			{
+				InitiatePatches();
+			}
+			catch (Exception ex) { MelonLogger.Error("Error in InitPatches [{0}]", ex.Message); }
+		}
+
+		private void InitiatePatches()
+        {
+			try
+			{
+				new Patches.Patch(typeof(LoadBalancingClient), typeof(XeroMain), "OnEvent", "OnEvent", BindingFlags.Static, BindingFlags.NonPublic);
+			}
+			catch { MelonLogger.Error("Error OnEvent Patch"); }
+		}
+
+		private bool OnEvent(EventData __0)
+        {
+			return EventBool;
         }
 		private static void OnPlayerJoin(Player player)
 		{
@@ -75,8 +112,11 @@ namespace Xero
 		}
 
 		public static event Action<Player> OnLocalPlayerJoined;
+		public string directory = Path.Combine(Environment.CurrentDirectory, "Mods\\XeroSmall.dll");
 
-		public static event Action<Player> OnLocalPlayerLeft;
+		public static bool EventBool = true;
+
+        public static event Action<Player> OnLocalPlayerLeft;
 
 	}
 }
