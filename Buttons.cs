@@ -19,12 +19,12 @@ namespace Xero
 {
     class Buttons : ModComponent
     {
-        public void CallonApplicationStart()
+        public static void CallonApplicationStart()
         {
             XeroMain.OnLocalPlayerJoined += delegate (Player player)
             {
-                Controller = (player).GetComponent<CharacterController>();
-                State = (player).GetComponent<VRCMotionState>();
+                Controller = player.GetComponent<CharacterController>();
+                State = player.GetComponent<VRCMotionState>();
             };
             XeroMain.OnLocalPlayerLeft += delegate
             {
@@ -32,7 +32,7 @@ namespace Xero
                 SetNoClipActive(active: false);
             };
         }
-        public void CallonUI()
+        public static void CallonUI()
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Xero
             catch { MelonLogger.Error("Error in setting Inputs"); }
             _uiManager = new UiManager("<color=#755985>Xero</color> Menu", Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png").LoadSpriteFromDisk());
             FlyPage = _uiManager.MainMenu.AddMenuPage("Fly Options", "Allows you to change options inside of fly");
-            FlyToggle = FlyPage.AddToggle("Fly", "Enables / Disables Fly", delegate (bool fly) 
+            FlyToggle = FlyPage.AddToggle("Fly", "Enables / Disables Fly", delegate (bool fly)
             {
                 SetFlyActive(fly);
             }, false);
@@ -74,22 +74,24 @@ namespace Xero
                     try
                     {
                         flyspeed = Int32.Parse(s);
+                        FlySpeedTextButton.Text = $"Speed [{flyspeed}]";
                     }
                     catch { MelonLogger.Error("Unable to Parse Int {0}", s); }
                 }, null, null);
             }, null);
             FlySpeedTextButton = FlyPage.AddButton($"Speed [{flyspeed}]", "Fly Speed", null, null);
-            UserMenu = _uiManager.TargetMenu.AddMenuPage("<color=red>Xero</color>User Menu", "User", null);
-            TelePort = UserMenu.AddButton("Teleport","Teleports To Player",delegate ()
-            {
-                Utils.LocalPlayer.transform.position = Utils.XeroSelectedUser.transform.position;
-            }, null);
-            InfTelePort = UserMenu.AddToggle("Attach To Player", "Attaches To Player", delegate (bool attach) 
+            UserMenu = _uiManager.TargetMenu.AddMenuPage("<color=green>Player</color>Page", "User", null);
+            TelePort = UserMenu.AddButton("Teleport", "Teleports To Player", delegate ()
+              {
+                  Utils.LocalPlayer.transform.position = Utils.XeroSelectedUser.transform.position;
+              }, null);
+            InfTelePort = UserMenu.AddToggle("Attach To Player", "Attaches To Player", delegate (bool attach)
             { Teleport(attach); }, false);
-            ForceClone = UserMenu.AddButton("", "", delegate () {  }, null);
+            ForceClone = UserMenu.AddButton("Force Clone", "Force Clones Their Avatar", delegate () 
+            { Utils.ChangeAVIFromString(Utils.XeroSelectedUser.prop_ApiAvatar_0.id); }, null);
         }
 
-        private void Teleport(bool attch)
+        private static void Teleport(bool attch)
         {
             if (attch)
             {
@@ -100,20 +102,20 @@ namespace Xero
                 MelonCoroutines.Stop(TeleportInf());
             }
         }
-        private IEnumerator TeleportInf()
+        private static IEnumerator TeleportInf()
         {
             while (true)
-            { 
-            
-            yield return null;
+            {
+
+                yield return null;
             }
         }
-        public void CallonUpdate()
+        public static void CallonUpdate()
         {
 
         }
 
-        public void SetFlyActive(bool active)
+        public static void SetFlyActive(bool active)
         {
             if (active)
             {
@@ -144,7 +146,7 @@ namespace Xero
                 Physics.gravity = gravity;
             }
         }
-        public void SetNoClipActive(bool active)
+        public static void SetNoClipActive(bool active)
         {
             if (Controller != null)
             {
@@ -153,7 +155,7 @@ namespace Xero
             IsNoClipEnabled = active;
         }
 
-        private IEnumerator FlyCoroutineVR()
+        private static IEnumerator FlyCoroutineVR()
         {
             while (true)
             {
@@ -165,7 +167,7 @@ namespace Xero
                 yield return null;
             }
         }
-        private IEnumerator FlyCoroutineDesktop()
+        private static IEnumerator FlyCoroutineDesktop()
         {
             while (true)
             {
@@ -173,7 +175,7 @@ namespace Xero
                 float num = 0f;
                 num += (Input.GetKey(KeyCode.Q) ? -1 : 0);
                 num += (Input.GetKey(KeyCode.E) ? 1 : 0);
-                Vector3 val = !RunInput.field_Private_Boolean_0 ? Camera.main.transform.right * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetStrafeSpeed() * Input.GetAxis("Horizontal") + Vector3.up * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetWalkSpeed() * num + Camera.main.transform.forward * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetWalkSpeed() * Input.GetAxis("Vertical") * flyspeed * Time.deltaTime 
+                Vector3 val = !RunInput.field_Private_Boolean_0 ? Camera.main.transform.right * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetStrafeSpeed() * Input.GetAxis("Horizontal") + Vector3.up * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetWalkSpeed() * num + Camera.main.transform.forward * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetWalkSpeed() * Input.GetAxis("Vertical") * flyspeed * Time.deltaTime
                 : (Camera.main.transform.right * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetStrafeSpeed() * Input.GetAxis("Horizontal") + Vector3.up * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetRunSpeed() * num + Camera.main.transform.forward * field_Internal_Static_VRCPlayer_.field_Private_VRCPlayerApi_0.GetRunSpeed() * Input.GetAxis("Vertical")) * flyspeed * Time.deltaTime;
                 Transform transform = (field_Internal_Static_VRCPlayer_).transform;
                 transform.position = transform.position + val;
@@ -183,35 +185,28 @@ namespace Xero
         }
 
         private static UiManager _uiManager;
-        private ReMenuPage FlyPage;
-        private ReMenuToggle FlyToggle;
-
-        public ReMenuToggle NoClipToggle { get; private set; }
-
-        private ReMenuButton FlySpeedUp;
-
-        public ReMenuButton FlySpeedDown { get; private set; }
-        public ReMenuButton FlySpeedReset { get; private set; }
-        public ReMenuButton FlySpeedSet { get; private set; }
-        public ReMenuButton FlySpeedTextButton { get; private set; }
-        public ReMenuPage UserMenu { get; private set; }
-        public ReMenuButton TelePort { get; private set; }
-        public ReMenuToggle InfTelePort { get; private set; }
-        public ReMenuButton ForceClone { get; private set; }
-        public ReMenuButton PlayerMenu { get; private set; }
-
-        private ReMenuPage TestPage;
-        private bool FlyEnable;
-        private CharacterController Controller;
-        private VRCMotionState State;
-        private Vector3 gravity;
-        private object coroutine;
-        public VRCInput VerticalInput;
-        public VRCInput HorizontalInput;
-        public VRCInput VerticalLookInput;
-        public VRCInput RunInput;
-        public bool IsFlyEnabled;
-        public bool IsNoClipEnabled;
-        private int flyspeed = 1;
+        private static ReMenuPage FlyPage;
+        private static ReMenuToggle FlyToggle;
+        public static ReMenuToggle NoClipToggle;
+        private static ReMenuButton FlySpeedUp;
+        public static ReMenuButton FlySpeedDown;
+        public static ReMenuButton FlySpeedReset;
+        public static ReMenuButton FlySpeedSet;
+        public static ReMenuButton FlySpeedTextButton;
+        public static ReMenuPage UserMenu;
+        public static ReMenuButton TelePort;
+        public static ReMenuToggle InfTelePort;
+        public static ReMenuButton ForceClone;
+        private static CharacterController Controller;
+        private static VRCMotionState State;
+        private static Vector3 gravity;
+        private static object coroutine;
+        public static VRCInput VerticalInput;
+        public static VRCInput HorizontalInput;
+        public static VRCInput VerticalLookInput;
+        public static VRCInput RunInput;
+        public static bool IsFlyEnabled;
+        public static bool IsNoClipEnabled;
+        private static int flyspeed = 1;
     }
 }

@@ -9,10 +9,11 @@ namespace Xero
         public override void OnApplicationStart()
         {
             MelonCoroutines.Start(HookOnUiManagerInit());
+			Buttons.CallonApplicationStart();
         }
         public override void OnUpdate()
         {
-
+			Buttons.CallonUpdate();
         }
         public override void OnSceneWasInitialized(int buildIndex, string sceneName)
         {
@@ -26,9 +27,9 @@ namespace Xero
             }
             OnUiManagerInit(); // This is called when the UI is being created so that way I can start to implement my buttons as well!
         }
-        private void OnUiManagerInit()
+        public void OnUiManagerInit()
         {
-
+			Buttons.CallonUI();
         }
 		private static void OnPlayerJoin(Player player)
 		{
