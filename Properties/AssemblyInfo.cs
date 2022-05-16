@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: MelonInfo(typeof(Xero.XeroMain), "Xero(FPS Saver)", "FPS Safe", "Foxx")]
+[assembly: MelonInfo(typeof(Xero.XeroMain), "Xero Small", "FPS Safe", "Foxx")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

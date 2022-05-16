@@ -10,6 +10,7 @@ namespace ReMod.Core.VRChat
     public static class QuickMenuExtensions
     {
         public delegate void ShowConfirmDialogDelegate(UIMenu uiMenu, string title, string body, Il2CppSystem.Action onYes, Il2CppSystem.Action onNo=null);
+
         private static ShowConfirmDialogDelegate _showConfirmDialogDelegate;
 
         private static ShowConfirmDialogDelegate ShowConfirmDialogFn
@@ -37,7 +38,9 @@ namespace ReMod.Core.VRChat
         {
             return quickMenu.gameObject.activeSelf;
         }
+
         public delegate void ShowConfirmDialogWithCancelDelegate(UIMenu uiMenu, string title, string body, string yesLabel, string noLabel, string cancelLabel, Il2CppSystem.Action onYes, Il2CppSystem.Action onNo, Il2CppSystem.Action onCancel);
+
         private static ShowConfirmDialogWithCancelDelegate _showConfirmDialogWithCancelDelegate;
         
         private static ShowConfirmDialogWithCancelDelegate ShowConfirmDialogWithCancelFn
@@ -61,6 +64,7 @@ namespace ReMod.Core.VRChat
         }
 
         public delegate void ShowAlertDialogDelegate(UIMenu uiMenu, string title, string body, Il2CppSystem.Action onClose);
+
         private static ShowAlertDialogDelegate _showAlertDialogDelegate;
 
         private static ShowAlertDialogDelegate ShowAlertDialogFn

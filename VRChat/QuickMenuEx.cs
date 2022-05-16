@@ -66,11 +66,13 @@ namespace ReMod.Core.VRChat
             }
         }
 
-        private static Wing[] _wings;
-        private static Wing _leftWing;
-        private static Wing _rightWing;
+        private static Wing[] _wings { get; set; }
 
-        private static Transform _cameraMenu;
+        private static Wing _leftWing { get; set; }
+
+        private static Wing _rightWing { get; set; }
+
+        private static Transform _cameraMenu { get; set; }
 
         public static Wing[] Wings
         {

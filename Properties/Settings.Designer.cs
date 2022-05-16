@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Xero_Small_.Properties {
+namespace XeroSmall.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

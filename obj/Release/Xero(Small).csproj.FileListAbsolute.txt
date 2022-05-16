@@ -2,7 +2,8 @@ C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\bin\Release\Xero(Small).dll
 C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\bin\Release\Xero(Small).pdb
 C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\bin\Release\Photon-DotNet.dll
 C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\obj\Release\Xero(Small).csproj.CoreCompileInputs.cache
-C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\obj\Release\Xero(Small).csproj.CopyComplete
-C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\obj\Release\Xero(Small).dll
-C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\obj\Release\Xero(Small).pdb
 C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\obj\Release\Xero(Small).csproj.AssemblyReference.cache
+D:\steam\steamapps\common\VRChat\Mods\XeroSmall.dll
+D:\steam\steamapps\common\VRChat\Mods\XeroSmall.pdb
+C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\obj\Release\XeroSmall.dll
+C:\Users\foxxv\source\repos\Xero(Small)\Xero(Small)\obj\Release\XeroSmall.pdb
