@@ -305,6 +305,6 @@ namespace Xero
 
         private static Sprite _sprite;
 
-        private static string _spriteString = (Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png"));
+        public static string SpriteString = (Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png"));
     }
 }
