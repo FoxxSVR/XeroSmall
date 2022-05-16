@@ -15,7 +15,7 @@ namespace Xero
     public class XeroMain : MelonMod
     {
 
-        public override void OnApplicationStart()
+        public override void OnApplicationStart() 
         {
             DownloadUpdateFromGitHub.DownloadFromGitHub("XeroSmall", out _);
             MelonCoroutines.Start(HookOnUiManagerInit());

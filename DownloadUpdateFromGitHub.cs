@@ -33,10 +33,9 @@ namespace Xero
             {
                 Headers =
                 {
-                    ["User-Agent"] =
-                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+                 "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0"
                 }
-            };
+        };
 
             byte[] latestBytes = null;
             try
@@ -65,7 +64,7 @@ namespace Xero
                 }
                 catch (IOException e)
                 {
-                    MelonLogger.Warning($"Failed writing {fileName} to disk. You may encounter errors while using ReModCE.");
+                    MelonLogger.Warning($"Failed writing {fileName} to disk. You may encounter errors while using Xero Small.");
                 }
             }
 

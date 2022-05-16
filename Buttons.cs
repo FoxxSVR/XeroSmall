@@ -39,32 +39,6 @@ namespace Xero
                 SetNoClipActive(active: false);
             };
 
-            try
-            {
-                if (!File.Exists(_spriteString))
-                {
-                    DownloadFile("https://cdn.discordapp.com/attachments/951314130105667645/975553086858854400/Senko.png?size=4096", _spriteString);
-                    _sprite = _spriteString.LoadSpriteFromDisk();
-                }
-                else { _sprite = _spriteString.LoadSpriteFromDisk(); }
-            }
-            catch (Exception ex) { MelonLogger.Error("Error Downloading Image... Setting Sprite to Null {0}", ex.Message); _sprite = null; }
-        }
-
-        public static void DownloadFile(string fileUrl, string savePath)
-        {
-            WebClient webClient = new WebClient();
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(FinishedDownloading);
-            Uri uri = new Uri(fileUrl);
-            webClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0");
-            webClient.DownloadFile(uri, savePath);
-        }
-
-        private static void FinishedDownloading(object sender, AsyncCompletedEventArgs e)
-        {
-            string myFileNameID = ((System.Net.WebClient)(sender)).QueryString["fileName"];
-            MelonLogger.Msg("Done downloading file: " + myFileNameID);
         }
 
         public static void CallonUI()
@@ -132,12 +106,6 @@ namespace Xero
                 _flySpeedTextButton.Text = $"Speed [{_flyspeed}]";
             }, null);
 
-            _flySpeedReset = _flyPage.AddButton("Fly Speed Reset", "Resets Fly Speed", delegate ()
-            {
-                _flyspeed = 1;
-                _flySpeedTextButton.Text = $"Speed [{_flyspeed}]";
-            }, null);
-
             _flySpeedSet = _flyPage.AddButton("Set Fly Speed", "Set Fly speed by Menu", delegate ()
             {
                 Popup.CreateInputPopup("Set Fly Speed", "", "Set Fly Speed", "Cancel", "Confirm", UnityEngine.UI.InputField.InputType.Standard, true, delegate (string s)
@@ -151,9 +119,15 @@ namespace Xero
                 }, null, null);
             }, null);
 
+            _flySpeedReset = _flyPage.AddButton("Fly Speed Reset", "Resets Fly Speed", delegate ()
+            {
+                _flyspeed = 1;
+                _flySpeedTextButton.Text = $"Speed [{_flyspeed}]";
+            }, null);
+
             _flySpeedTextButton = _flyPage.AddButton($"Speed [{_flyspeed}]", "Fly Speed", null, null);
 
-            _userMenu = _uiManager.TargetMenu.AddMenuPage("<color=green>Player</color>Page", "User", null);
+            _userMenu = _uiManager.TargetMenu.AddMenuPage("<color=green>Player</color> Page", "User", null);
 
             _telePort = _userMenu.AddButton("Teleport", "Teleports To Player", delegate ()
               {
