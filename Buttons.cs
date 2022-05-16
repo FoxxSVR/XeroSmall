@@ -17,34 +17,15 @@ using ReMod.Core.UI.QuickMenu;
 using ReMod.Core.Managers;
 using System.Net;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace Xero
 {
     class Buttons : XeroMain
     {
+
         public static void CallonApplicationStart()
         {
-
-            try
-            {
-                if (!File.Exists(Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png")))
-                {
-                    _sprite = null;
-                    using var wc = new WebClient
-                    {
-                        Headers =
-                        {
-                    ["User-Agent"] =
-                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
-                        }
-                    };
-                    Uri ur = new Uri("https://drive.google.com/file/d/1QZ5Omnpe2REAaNEAMUKKUjOrtpeVxrNA/view?usp=sharing");
-                    wc.DownloadFile(ur, (Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png")));
-                }
-                else
-                { _sprite = (Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png")).LoadSpriteFromDisk();}
-            }
-            catch (Exception ex) { MelonLogger.Error("Error Downloading Image... Setting Sprite to Null {0}", ex.Message); _sprite = null; }
 
             XeroMain.OnLocalPlayerJoined += delegate (Player player)
             {
@@ -57,6 +38,33 @@ namespace Xero
                 SetFlyActive(active: false);
                 SetNoClipActive(active: false);
             };
+
+            try
+            {
+                if (!File.Exists(_spriteString))
+                {
+                    DownloadFile("https://cdn.discordapp.com/attachments/951314130105667645/975553086858854400/Senko.png?size=4096", _spriteString);
+                    _sprite = _spriteString.LoadSpriteFromDisk();
+                }
+                else { _sprite = _spriteString.LoadSpriteFromDisk(); }
+            }
+            catch (Exception ex) { MelonLogger.Error("Error Downloading Image... Setting Sprite to Null {0}", ex.Message); _sprite = null; }
+        }
+
+        public static void DownloadFile(string fileUrl, string savePath)
+        {
+            WebClient webClient = new WebClient();
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(FinishedDownloading);
+            Uri uri = new Uri(fileUrl);
+            webClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0");
+            webClient.DownloadFile(uri, savePath);
+        }
+
+        private static void FinishedDownloading(object sender, AsyncCompletedEventArgs e)
+        {
+            string myFileNameID = ((System.Net.WebClient)(sender)).QueryString["fileName"];
+            MelonLogger.Msg("Done downloading file: " + myFileNameID);
         }
 
         public static void CallonUI()
@@ -265,62 +273,64 @@ namespace Xero
             }
         }
 
-        private static UiManager _uiManager { get; set; }
+        private static UiManager _uiManager;
 
-        private static ReMenuPage _flyPage { get; set; }
+        private static ReMenuPage _flyPage;
 
-        private static ReMenuButton _getWorldID { get; set; }
+        private static ReMenuButton _getWorldID;
 
-        private static ReMenuButton _joinworldbyid { get; set; }
+        private static ReMenuButton _joinworldbyid;
 
-        private static ReMenuButton _applyavatarbyid { get; set; }
+        private static ReMenuButton _applyavatarbyid;
 
-        private static ReMenuToggle _eventboolbutton { get; set; }
+        private static ReMenuToggle _eventboolbutton;
 
-        private static ReMenuToggle _flyToggle { get; set; }
+        private static ReMenuToggle _flyToggle;
 
-        private static ReMenuToggle _noClipToggle { get; set; }
+        private static ReMenuToggle _noClipToggle;
 
-        private static ReMenuButton _flySpeedUp { get; set; }
+        private static ReMenuButton _flySpeedUp;
 
-        private static ReMenuButton _flySpeedDown { get; set; }
+        private static ReMenuButton _flySpeedDown;
 
-        private static ReMenuButton _flySpeedReset { get; set; }
+        private static ReMenuButton _flySpeedReset;
 
-        private static ReMenuButton _flySpeedSet { get; set; }
+        private static ReMenuButton _flySpeedSet;
 
-        private static ReMenuButton _flySpeedTextButton { get; set; }
+        private static ReMenuButton _flySpeedTextButton;
 
-        private static ReMenuPage _userMenu { get; set; }
+        private static ReMenuPage _userMenu;
 
-        private static ReMenuButton _telePort { get; set; }
+        private static ReMenuButton _telePort;
 
-        private static ReMenuToggle _infTelePort { get; set; }
+        private static ReMenuToggle _infTelePort;
 
-        private static ReMenuButton _forceClone { get; set; }
+        private static ReMenuButton _forceClone;
 
-        private static CharacterController _controller { get; set; }
+        private static CharacterController _controller;
 
-        private static VRCMotionState _state { get; set; }
+        private static VRCMotionState _state;
 
-        private static Vector3 _gravity { get; set; }
+        private static Vector3 _gravity;
 
-        private static object _coroutine { get; set; }
+        private static object _coroutine;
 
-        private static VRCInput _verticalInput { get; set; }
+        private static VRCInput _verticalInput;
 
-        private static VRCInput _horizontalInput { get; set; }
+        private static VRCInput _horizontalInput;
 
-        private static VRCInput _verticalLookInput { get; set; }
+        private static VRCInput _verticalLookInput;
 
-        private static VRCInput _runInput { get; set; }
+        private static VRCInput _runInput;
 
-        private static bool _isFlyEnabled { get; set; }
+        private static bool _isFlyEnabled;
 
-        private static bool _isNoClipEnabled { get; set; }
+        private static bool _isNoClipEnabled;
 
         private static int _flyspeed = 1;
 
-        private static Sprite _sprite { get; set; }
+        private static Sprite _sprite;
+
+        private static string _spriteString = (Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png"));
     }
 }

@@ -9,7 +9,7 @@ using VRC.UI.Elements.Controls;
 
 namespace ReMod.Core.VRChat
 {
-    public static class VrcUiExtensions
+    public static class VRCUIExtenstions
     {
         public static GameObject MenuContent(this VRCUiManager uiManager)
         {
