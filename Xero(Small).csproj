@@ -28,7 +28,10 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -244,10 +247,6 @@
     </Reference>
     <Reference Include="Photon-DotNet">
       <HintPath>D:\steam\steamapps\common\VRChat\MelonLoader\Managed\Photon-DotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="ReMod.Core%283%29">
-      <HintPath>D:\steam\steamapps\common\VRChat\Mods\ReMod.Core(3).dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -685,11 +684,57 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buttons.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Config\Config Value.cs" />
+    <Compile Include="UI\Config\ConfigManger.cs" />
+    <Compile Include="UI\QuickMenu\IButtonPage.cs" />
+    <Compile Include="UI\QuickMenu\ReCategoryPage.cs" />
+    <Compile Include="UI\QuickMenu\ReMenuButton.cs" />
+    <Compile Include="UI\QuickMenu\ReMenuCategory.cs" />
+    <Compile Include="UI\QuickMenu\ReMenuPage.cs" />
+    <Compile Include="UI\QuickMenu\ReMenuSlider.cs" />
+    <Compile Include="UI\QuickMenu\ReMenuToggle.cs" />
+    <Compile Include="UI\QuickMenu\ReSliderCategory.cs" />
+    <Compile Include="UI\QuickMenu\ReTabButton.cs" />
+    <Compile Include="UI\ReAvatarList.cs" />
+    <Compile Include="UI\ReUiButton.cs" />
+    <Compile Include="UI\ReUiText.cs" />
+    <Compile Include="UI\UiElement.cs" />
+    <Compile Include="UI\UiManager.cs" />
+    <Compile Include="UI\Wings\ReMirroredWingButton.cs" />
+    <Compile Include="UI\Wings\ReMirroredWingMenu.cs" />
+    <Compile Include="UI\Wings\ReMirroredWingToggle.cs" />
+    <Compile Include="UI\Wings\ReWingButton.cs" />
+    <Compile Include="UI\Wings\ReWingMenu.cs" />
+    <Compile Include="UI\Wings\ReWingToggle.cs" />
+    <Compile Include="UI\XrefUtils.cs" />
+    <Compile Include="Unity\ColorExtensions.cs" />
+    <Compile Include="Unity\EnableDisableListener.cs" />
+    <Compile Include="Unity\RenderObjectListener.cs" />
+    <Compile Include="Unity\UnityExtensions.cs" />
     <Compile Include="Utils\Patches.cs" />
     <Compile Include="Utils\Popup.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="VRChat\ActionMenuExtensions.cs" />
+    <Compile Include="VRChat\PlayerExtensions.cs" />
+    <Compile Include="VRChat\PopupManagerExtensions.cs" />
+    <Compile Include="VRChat\QuickMenuEx.cs" />
+    <Compile Include="VRChat\QuickMenuExtensions.cs" />
+    <Compile Include="VRChat\VRCConfig.cs" />
+    <Compile Include="VRChat\VrcUiExtensions.cs" />
+    <Compile Include="VRChat\VRCUiManagerEx.cs" />
     <Compile Include="XeroMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

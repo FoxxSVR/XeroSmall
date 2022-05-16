@@ -1,5 +1,4 @@
 ﻿using MelonLoader;
-using ReMod.Core.VRChat;
 using System;
 using System.IO;
 using System.Net;
@@ -8,6 +7,7 @@ using UnityEngine.UI;
 using VRC;
 using VRC.Core;
 using VRC.DataModel;
+using VRC.UI.Elements.Menus;
 using XeroMain = Xero.XeroMain; 
 
 namespace Xero
@@ -16,6 +16,8 @@ namespace Xero
     {
         private static GameObject avatarObject;
         private static ApiAvatar a;
+        private static VRC.UI.Elements.QuickMenu _quickMenuInstance;
+        private static SelectedUserMenuQM _selectedUserLocal;
 
         public static Sprite LoadSpriteFromDisk(this string path)
         {
@@ -76,7 +78,7 @@ namespace Xero
         {
             get
             {
-                IUser field_Private_IUser_ = QuickMenuEx.SelectedUserLocal.field_Private_IUser_0;
+                IUser field_Private_IUser_ = SelectedUserLocal.field_Private_IUser_0;
                 Player player = PlayerManager.field_Private_Static_PlayerManager_0.GetPlayer(field_Private_IUser_.prop_String_0);
                 VRCPlayer vrcplayer = player.GetVRCPlayer();
 
@@ -105,6 +107,60 @@ namespace Xero
         public static ApiWorldInstance GetInstance()
         {
             return RoomManager.field_Internal_Static_ApiWorldInstance_0;
+        }
+        public static VRC.UI.Elements.QuickMenu Instance
+        {
+            get
+            {
+                if (_quickMenuInstance == null)
+                {
+                    _quickMenuInstance = GameObject.Find("UserInterface").GetComponentInChildren<VRC.UI.Elements.QuickMenu>(true);
+                }
+                return _quickMenuInstance;
+            }
+        }
+
+        public static SelectedUserMenuQM SelectedUserLocal
+        {
+            get
+            {
+                if (_selectedUserLocal == null)
+                {
+                    _selectedUserLocal = Instance.field_Public_Transform_0.Find("Window/QMParent/Menu_SelectedUser_Local").GetComponent<SelectedUserMenuQM>();
+                }
+                return _selectedUserLocal;
+            }
+        }
+        public static Player GetPlayer(this VRCPlayer vrcPlayer)
+        {
+            return vrcPlayer._player;
+        }
+        public static VRCPlayer GetVRCPlayer(this Player player)
+        {
+            return player._vrcplayer;
+        }
+        public static Player GetPlayer(this PlayerManager playerManager, string userId)
+        {
+            foreach (Player player in playerManager.GetPlayers())
+            {
+                if (!(player == null))
+                {
+                    APIUser apiuser = player.GetAPIUser();
+                    if (apiuser != null && apiuser.id == userId)
+                    {
+                        return player;
+                    }
+                }
+            }
+            return null;
+        }
+        public static Player[] GetPlayers(this PlayerManager playerManager)
+        {
+            return playerManager.prop_ArrayOf_Player_0;
+        }
+        public static APIUser GetAPIUser(this Player player)
+        {
+            return player.field_Private_APIUser_0;
         }
     }
 }

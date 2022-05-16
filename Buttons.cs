@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ReMod.Core;
-using ReMod.Core.UI.QuickMenu;
-using ReMod.Core.Managers;
 using System.IO;
 using MelonLoader;
 using XeroMain = Xero.XeroMain;
@@ -16,13 +13,28 @@ using UnityEngine.XR;
 using System.Collections;
 using VRC.SDKBase;
 using System.Windows.Forms;
+using ReMod.Core.UI.QuickMenu;
+using ReMod.Core.Managers;
+using System.Net;
 
 namespace Xero
 {
-    class Buttons : ModComponent
+    class Buttons : XeroMain
     {
         public static void CallonApplicationStart()
         {
+            try
+            {
+                if (!File.Exists(Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png")))
+                {
+                    WebClient webClient = new WebClient();
+                    webClient.DownloadFile("https://cdn.discordapp.com/attachments/951314130105667645/975553086858854400/Senko.png?size=4096", (Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png")));
+                    if (File.Exists(Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png")))
+                        _sprite = Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png").LoadSpriteFromDisk();
+                    else _sprite = null;
+                }
+            }
+            catch (Exception ex) { MelonLogger.Error("Error Downloading Image... Setting Sprite to Null {0}", ex.Message); }
             XeroMain.OnLocalPlayerJoined += delegate (Player player)
             {
                 _controller = player.GetComponent<CharacterController>();
@@ -44,7 +56,7 @@ namespace Xero
                 _runInput = VRCInputManager.field_Private_Static_Dictionary_2_String_VRCInput_0["Run"];
             }
             catch { MelonLogger.Error("Error in setting Inputs"); }
-            _uiManager = new UiManager("<color=#755985>Xero</color> Menu", Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png").LoadSpriteFromDisk());
+            _uiManager = new UiManager("<color=#755985>Xero</color> Menu", _sprite);
             _flyPage = _uiManager.MainMenu.AddMenuPage("Fly Options", "Allows you to change options inside of fly");
             _getWorldID = _uiManager.MainMenu.AddButton("Get World By ID", "Get World By ID", delegate ()
             {
@@ -251,5 +263,6 @@ namespace Xero
         private static bool _isFlyEnabled;
         private static bool _isNoClipEnabled;
         private static int _flyspeed = 1;
+        private static Sprite _sprite;
     }
 }
