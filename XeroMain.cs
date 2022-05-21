@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using ExitGames.Client.Photon;
 using MelonLoader;
 using Photon.Realtime;
+using UnityEngine;
 using VRC;
 using Player = VRC.Player;
 
@@ -14,13 +16,12 @@ namespace Xero
 {
     public class XeroMain : MelonMod
     {
-
-        public override void OnApplicationStart() 
+        public override void OnApplicationStart()
         {
             DownloadUpdateFromGitHub.DownloadFromGitHub("XeroSmall", out _);
             MelonCoroutines.Start(HookOnUiManagerInit());
             Buttons.CallonApplicationStart();
-        } 
+        }
 
         public override void OnApplicationLateStart()
         {
@@ -61,7 +62,7 @@ namespace Xero
             {
                 new Patches.Patch(typeof(LoadBalancingClient), typeof(XeroMain), "OnEvent", "OnEvent", BindingFlags.Static, BindingFlags.NonPublic);
             }
-            catch { MelonLogger.Error("Error OnEvent Patch"); }
+            catch { } // No Events Should be sent Yet
         }
 
         private bool OnEvent(EventData __0)
@@ -105,5 +106,8 @@ namespace Xero
 
         public static event Action<Player> OnLocalPlayerLeft;
 
+        private static string _directory = Path.Combine(Environment.CurrentDirectory, ("UserData\\Xero"));
+
+        public static Sprite SenkoSprite;
     }
 }

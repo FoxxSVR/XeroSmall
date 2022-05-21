@@ -26,7 +26,6 @@ namespace Xero
 
         public static void CallonApplicationStart()
         {
-
             XeroMain.OnLocalPlayerJoined += delegate (Player player)
             {
                 _controller = player.GetComponent<CharacterController>();
@@ -43,6 +42,12 @@ namespace Xero
 
         public static void CallonUI()
         {
+            if (!Directory.Exists(_directory))
+                Directory.CreateDirectory(_directory);
+            if (!File.Exists(_directory + "\\Sprite.png")) // if you want to use a sprite please put it inside of UserData / Images / Sprite.png
+                _sprite = null;
+            else { _sprite = Utils.SpriteFromFile(_directory + "\\Sprite.png"); }
+
             try
             {
                 _verticalInput = VRCInputManager.field_Private_Static_Dictionary_2_String_VRCInput_0["Vertical"];
@@ -52,12 +57,15 @@ namespace Xero
             }
             catch { MelonLogger.Error("Error in setting Inputs"); }
             _uiManager = new UiManager("<color=#755985>Xero</color>", _sprite);
+
             _flyPage = _uiManager.MainMenu.AddMenuPage("Fly Options", "Allows you to change options inside of fly");
+
             _getWorldID = _uiManager.MainMenu.AddButton("Get World By ID", "Get World By ID", delegate ()
             {
                 string wrld = RoomManager.field_Internal_Static_ApiWorld_0.id + ":" + Utils.GetInstance().instanceId;
                 Clipboard.SetText(wrld);
             }, null);
+
             _joinworldbyid = _uiManager.MainMenu.AddButton("Join World By ID", "Joins World By ID", delegate ()
             {
                 Popup.CreateInputPopup("Join by World ID", "", "ID Here...", "Cancel", "Confirm", UnityEngine.UI.InputField.InputType.Standard, false, delegate (string inputtext2)
@@ -83,7 +91,10 @@ namespace Xero
             }, null);
 
             _eventboolbutton = _uiManager.MainMenu.AddToggle("Incoming Events", "Turns off / on all incoming Events", delegate (bool evnt)
-            { XeroMain.EventBool = evnt; }, true);
+            {
+                XeroMain.EventBool = evnt;
+            }, true);
+
             _flyToggle = _flyPage.AddToggle("Fly", "Enables / Disables Fly", delegate (bool fly)
             {
                 SetFlyActive(fly);
@@ -135,10 +146,14 @@ namespace Xero
               }, null);
 
             _infTelePort = _userMenu.AddToggle("Attach To Player", "Attaches To Player", delegate (bool attach)
-            { Teleport(attach); }, false);
+            { 
+                Teleport(attach);
+            }, false);
 
             _forceClone = _userMenu.AddButton("Force Clone", "Force Clones Their Avatar", delegate ()
-            { Utils.ChangeAVIFromString(Utils.XeroSelectedUser.prop_ApiAvatar_0.id); }, null);
+            { 
+                Utils.ChangeAVIFromString(Utils.XeroSelectedUser.prop_ApiAvatar_0.id); 
+            }, null);
 
         }
 
@@ -268,7 +283,7 @@ namespace Xero
         private static ReMenuButton _flySpeedDown;
 
         private static ReMenuButton _flySpeedReset;
-
+        private static ReMenuButton _spriteButton;
         private static ReMenuButton _flySpeedSet;
 
         private static ReMenuButton _flySpeedTextButton;
@@ -303,8 +318,8 @@ namespace Xero
 
         private static int _flyspeed = 1;
 
-        private static Sprite _sprite;
+        private static string _directory = Path.Combine(Environment.CurrentDirectory, "UserData\\Images");
 
-        public static string SpriteString = (Path.Combine(Environment.CurrentDirectory, "Xero\\Images\\Senko.png"));
+        private static Sprite _sprite;
     }
 }

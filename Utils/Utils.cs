@@ -8,7 +8,7 @@ using VRC;
 using VRC.Core;
 using VRC.DataModel;
 using VRC.UI.Elements.Menus;
-using XeroMain = Xero.XeroMain; 
+using XeroMain = Xero.XeroMain;
 
 namespace Xero
 {
@@ -18,8 +18,27 @@ namespace Xero
         private static ApiAvatar a;
         private static VRC.UI.Elements.QuickMenu _quickMenuInstance;
         private static SelectedUserMenuQM _selectedUserLocal;
-        private static byte[] _imageByteArray;
         private static Sprite _createdSprite;
+        private static Sprite _webSprite;
+
+        public static Sprite SpriteFromFile(string path)
+        {
+            if (path != null)
+            {
+                byte[] spritebyte = File.ReadAllBytes(path);
+                if (spritebyte != null)
+                {
+                    Texture2D texture = new Texture2D(512, 512);
+                    if (Il2CppImageConversionManager.LoadImage(texture, spritebyte))
+                    {
+                        Sprite sprite = Sprite.CreateSprite(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f, 0, 0, new Vector4(), false);
+                        sprite.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                        _createdSprite = sprite;
+                    }
+                }
+            }
+            return _createdSprite;
+        }
 
         public static void DelegateSafeInvoke(this Delegate @delegate, params object[] args)
         {
@@ -68,7 +87,7 @@ namespace Xero
                 GameObject.Destroy(avatarObject);
             }
             catch { if (!stwing.Contains("avtr_")) MelonLogger.Error("String was not an avtr id"); if (a.releaseStatus == "private") MelonLogger.Error("Avatar is not public"); }
-           
+
         }
         public static ApiWorldInstance GetInstance()
         {
