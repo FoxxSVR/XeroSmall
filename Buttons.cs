@@ -44,6 +44,7 @@ namespace Xero
         {
             if (!Directory.Exists(_directory))
                 Directory.CreateDirectory(_directory);
+
             if (!File.Exists(_directory + "\\Sprite.png")) // if you want to use a sprite please put it inside of UserData / Images / Sprite.png
                 _sprite = null;
             else { _sprite = Utils.SpriteFromFile(_directory + "\\Sprite.png"); }
@@ -56,6 +57,7 @@ namespace Xero
                 _runInput = VRCInputManager.field_Private_Static_Dictionary_2_String_VRCInput_0["Run"];
             }
             catch { MelonLogger.Error("Error in setting Inputs"); }
+
             _uiManager = new UiManager("<color=#755985>Xero</color>", _sprite);
 
             _flyPage = _uiManager.MainMenu.AddMenuPage("Fly Options", "Allows you to change options inside of fly");
@@ -68,11 +70,11 @@ namespace Xero
 
             _joinworldbyid = _uiManager.MainMenu.AddButton("Join World By ID", "Joins World By ID", delegate ()
             {
-                Popup.CreateInputPopup("Join by World ID", "", "ID Here...", "Cancel", "Confirm", UnityEngine.UI.InputField.InputType.Standard, false, delegate (string inputtext2)
+                Popup.CreateInputPopup("Join by World ID", "", "ID Here...", "Cancel", "Confirm", UnityEngine.UI.InputField.InputType.Standard, false, delegate (string WorldString)
                 {
                     try
                     {
-                        Networking.GoToRoom(inputtext2);
+                        Networking.GoToRoom(WorldString);
                     }
                     catch { MelonLogger.Error("Text Entered was not a World ID"); }
                 }, null, null);
@@ -80,19 +82,20 @@ namespace Xero
 
             _applyavatarbyid = _uiManager.MainMenu.AddButton("Change Avatar by ID", "Change Avatar by ID", delegate ()
             {
-                Popup.CreateInputPopup("Change Avatar by ID", "", "ID Here...", "Cancel", "Confirm", UnityEngine.UI.InputField.InputType.Standard, false, delegate (string inputtext2)
+                Popup.CreateInputPopup("Change Avatar by ID", "", "ID Here...", "Cancel", "Confirm", UnityEngine.UI.InputField.InputType.Standard, false, delegate (string AvatarString)
                 {
                     try
                     {
-                        Utils.ChangeAVIFromString(inputtext2);
+                        Utils.ChangeAVIFromString(AvatarString);
                     }
-                    catch { MelonLogger.Error("Text Entered was not a World ID"); }
+                    catch { MelonLogger.Error("Text Entered was not a Avatar ID"); }
                 }, null, null);
             }, null);
 
-            _eventboolbutton = _uiManager.MainMenu.AddToggle("Incoming Events", "Turns off / on all incoming Events", delegate (bool evnt)
+            _eventboolbutton = _uiManager.MainMenu.AddToggle("Incoming Events On", "Turns off / on all incoming Events", delegate (bool evnt)
             {
                 XeroMain.EventBool = evnt;
+                _eventboolbutton.Text = evnt ? "Incoming Events On" : "Incoming Events Off";
             }, true);
 
             _flyToggle = _flyPage.AddToggle("Fly", "Enables / Disables Fly", delegate (bool fly)
@@ -247,8 +250,8 @@ namespace Xero
                 num += (Input.GetKey(KeyCode.E) ? 1 : 0);
                 Vector3 val = !_runInput.field_Private_Boolean_0 ? Camera.main.transform.right * localplayer.field_Private_VRCPlayerApi_0.GetStrafeSpeed() *
                     Input.GetAxis("Horizontal") + Vector3.up * localplayer.field_Private_VRCPlayerApi_0.GetWalkSpeed() * num + Camera.main.transform.forward *
-                    localplayer.field_Private_VRCPlayerApi_0.GetWalkSpeed() * Input.GetAxis("Vertical") * _flyspeed * Time.deltaTime
-                : (Camera.main.transform.right * localplayer.field_Private_VRCPlayerApi_0.GetStrafeSpeed() *
+                    localplayer.field_Private_VRCPlayerApi_0.GetWalkSpeed() * Input.GetAxis("Vertical") * _flyspeed * Time.deltaTime 
+                    : (Camera.main.transform.right * localplayer.field_Private_VRCPlayerApi_0.GetStrafeSpeed() *
                 Input.GetAxis("Horizontal") + Vector3.up * localplayer.field_Private_VRCPlayerApi_0.GetRunSpeed() *
                 num + Camera.main.transform.forward * localplayer.field_Private_VRCPlayerApi_0.GetRunSpeed() *
                 Input.GetAxis("Vertical")) * _flyspeed * Time.deltaTime;

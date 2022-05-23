@@ -100,14 +100,8 @@ namespace Xero
 
         public static event Action<Player> OnLocalPlayerJoined;
 
-        public string directory = Path.Combine(Environment.CurrentDirectory, "Mods\\XeroSmall.dll");
-
         public static bool EventBool = true;
 
         public static event Action<Player> OnLocalPlayerLeft;
-
-        private static string _directory = Path.Combine(Environment.CurrentDirectory, ("UserData\\Xero"));
-
-        public static Sprite SenkoSprite;
     }
 }
