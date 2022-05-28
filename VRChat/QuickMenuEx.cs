@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRC.UI.Elements;
 using VRC.UI.Elements.Menus;
+using VRC.UI.Shared;
 
 namespace ReMod.Core.VRChat
 {
@@ -66,13 +67,11 @@ namespace ReMod.Core.VRChat
             }
         }
 
-        private static Wing[] _wings { get; set; }
+        private static Wing[] _wings;
+        private static Wing _leftWing;
+        private static Wing _rightWing;
 
-        private static Wing _leftWing { get; set; }
-
-        private static Wing _rightWing { get; set; }
-
-        private static Transform _cameraMenu { get; set; }
+        private static Transform _cameraMenu;
 
         public static Wing[] Wings
         {
@@ -93,7 +92,7 @@ namespace ReMod.Core.VRChat
             {
                 if (_leftWing == null)
                 {
-                    _leftWing = Wings.FirstOrDefault(w => w.field_Public_WingPanel_0 == Wing.WingPanel.Left);
+                    _leftWing = Wings.FirstOrDefault(w => w._wingType == WingType.Left);
                 }
                 return _leftWing;
             }
@@ -105,7 +104,7 @@ namespace ReMod.Core.VRChat
             {
                 if (_rightWing == null)
                 {
-                    _rightWing = Wings.FirstOrDefault(w => w.field_Public_WingPanel_0 == Wing.WingPanel.Right);
+                    _rightWing = Wings.FirstOrDefault(w => w._wingType == WingType.Right);
                 }
                 return _rightWing;
             }

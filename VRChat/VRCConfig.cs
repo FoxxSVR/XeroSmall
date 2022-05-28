@@ -4,26 +4,26 @@ namespace ReMod.Core.VRChat
 {
     public class VRCConfig
     {
-        public List<string> betas { get; set; }
-        public int ps_max_particles { get; set; }
-        public int ps_max_systems { get; set; }
-        public int ps_max_emission { get; set; }
-        public int ps_max_total_emission { get; set; }
-        public int ps_mesh_particle_divider { get; set; }
-        public int ps_mesh_particle_poly_limit { get; set; }
-        public int ps_collision_penalty_high { get; set; }
-        public int ps_collision_penalty_med { get; set; }
-        public int ps_collision_penalty_low { get; set; }
-        public int ps_trails_penalty { get; set; }
-        public int camera_res_height { get; set; }
-        public int camera_res_width { get; set; }
-        public int screenshot_res_height { get; set; }
-        public int screenshot_res_width { get; set; }
-        public int dynamic_bone_max_affected_transform_count { get; set; }
-        public int dynamic_bone_max_collider_check_count { get; set; }
-        public string cache_directory { get; set; }
-        public int cache_size { get; set; }
-        public int cache_expiry_delay { get; set; }
-        public bool disableRichPresence { get; set; }
+        public List<string> betas;
+        public int ps_max_particles;
+        public int ps_max_systems;
+        public int ps_max_emission;
+        public int ps_max_total_emission;
+        public int ps_mesh_particle_divider;
+        public int ps_mesh_particle_poly_limit;
+        public int ps_collision_penalty_high;
+        public int ps_collision_penalty_med;
+        public int ps_collision_penalty_low;
+        public int ps_trails_penalty;
+        public int camera_res_height;
+        public int camera_res_width;
+        public int screenshot_res_height;
+        public int screenshot_res_width;
+        public int dynamic_bone_max_affected_transform_count;
+        public int dynamic_bone_max_collider_check_count;
+        public string cache_directory;
+        public int cache_size;
+        public int cache_expiry_delay;
+        public bool disableRichPresence;
     }
 }

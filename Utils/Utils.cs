@@ -83,7 +83,7 @@ namespace Xero
                 };
                 avatarPedestal.field_Private_ApiAvatar_0 = a;
                 // Need to test these later.
-                avatarPedestal.Method_Private_Void_4();
+                avatarPedestal.Method_Private_Void_2(); // FIX THIS ONE
                 GameObject.Destroy(avatarObject);
             }
             catch { if (!stwing.Contains("avtr_")) MelonLogger.Error("String was not an avtr id"); if (a.releaseStatus == "private") MelonLogger.Error("Avatar is not public"); }
@@ -141,7 +141,7 @@ namespace Xero
         }
         public static Player[] GetPlayers(this PlayerManager playerManager)
         {
-            return playerManager.prop_ArrayOf_Player_0;
+            return playerManager.GetPlayers();
         }
         public static APIUser GetAPIUser(this Player player)
         {
